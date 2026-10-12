@@ -1,13 +1,17 @@
+import os
 import requests
 
 # Testar a API
 try:
+    api_key = os.getenv("VKINHA_API_KEY")
+    if not api_key:
+        raise RuntimeError("VKINHA_API_KEY não configurada no ambiente")
+
     headers = {
         "Accept": "application/json",  # Solicita uma resposta em JSON
         "User-Agent": "VKINHA-Bot/1.0"  # Adiciona um User-Agent para evitar bloqueios
     }
-    api_key = '[REDACTED_SECRET]'  # Sua chave de API
-    url = f"https://vkinha.com/Bta.php?api_key={api_key}"  # Adiciona a chave na URL
+    url = f"https://vkinha.com/Bta.php?api_key={api_key}"
 
     response = requests.get(url, headers=headers)
     
