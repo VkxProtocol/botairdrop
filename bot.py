@@ -2,13 +2,19 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 import requests
 import json
+import os
 from datetime import datetime, timedelta
 import random
 
 # Configurações
-API_URL = "https://www.vkinha.com/php/bta.php"
-API_KEY = '[REDACTED_SECRET]'
-TOKEN = '[REDACTED_SECRET]'
+API_URL = os.getenv("VKINHA_API_URL", "https://www.vkinha.com/php/bta.php")
+API_KEY = os.getenv("VKINHA_API_KEY")
+TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
+
+if not API_KEY:
+    raise RuntimeError("VKINHA_API_KEY não configurada no ambiente")
+if not TOKEN:
+    raise RuntimeError("TELEGRAM_BOT_TOKEN não configurado no ambiente")
 
 def fetch_user_data(user_id=None, wallet=None):
     """Busca os dados do usuário na API."""
